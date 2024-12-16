@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+//using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Analizator
 {
@@ -15,25 +15,28 @@ namespace Analizator
         public List<string> operationsAssignments = new List<string>();
         public List<string> expression = new List<string>();
         public Dictionary<string, bool> identType = new Dictionary<string, bool>();
+        public Dictionary<string, string> typePer = new Dictionary<string, string>();
         //private Form1 _form;
         private List<Identificator> _identificators;
         List<string> ident;
         private List<Konstanta> _numbers;
         List<string> numb;
+        string _enterText;
         
 
         private List<string> operations = new List<string> { "NE", "EQ", "LT", "LE", "GT", "GE", "plus", "min", "or", "mult", "div", "and", "~" };
-        public SyntacticAnalizator(List<Identificator> identificators, List<Konstanta> numbers)
+        public SyntacticAnalizator(List<Identificator> identificators, List<Konstanta> numbers,string enterText)
         {
             //_form = form;
             _identificators = identificators;
             _numbers = numbers;
             ident = _identificators.Select(tuple => tuple.valueIdentificator).ToList();
             numb = _numbers.Select(tuple => tuple.valueKonstanta).ToList();
-            foreach (var ident in identificators)
-            {
-                identType.Add(ident.valueIdentificator, false);
-            }
+            _enterText = enterText;
+            //foreach (var ident in identificators)
+            //{
+            //    identType.Add(ident.valueIdentificator, false);
+            //}
         }
 
         public void CheckProgram(string programStr)
@@ -56,6 +59,7 @@ namespace Analizator
 
                 if (programStructure[i] == "{description}")
                 {
+                    
                     p = Description(programStrArr, p);
                     if (p == -1)
                     {
@@ -88,8 +92,10 @@ namespace Analizator
             List<string> tempInd = new List<string>();
             for (int i = 0; i < descriptionStructure.Length; i++)
             {
+                
                 if (descriptionStructure[i] == str[p])
                 {
+            
                     p++;
                     continue;
                 }
@@ -97,8 +103,9 @@ namespace Analizator
                 //else if (descriptionStructure[i] == "{identifier}" && _identificators.FirstOrDefault(item=>item.valueIdentificator.Contains(str[p]))
                 else if (descriptionStructure[i] == "{identifier}" && _identificators.Any(item => item.valueIdentificator == str[p]))
                 {
-                    tempInd.Add(str[p]);
                     
+                    tempInd.Add(str[p]);
+                    typePer.Add(str[p],"null");
                     p++;
                     
                     continue;
@@ -146,6 +153,7 @@ namespace Analizator
                     }
                     else
                     {
+                        MessageBox.Show("Типа данных " + str[p] + " нет");
                         return -1;
                     }
                 }
@@ -171,11 +179,18 @@ namespace Analizator
             int pn = p;
             while (str[p] != "end")
             {
-
+                
+                if (str[p] == "/n")
+                {
+                    
+                    p++;
+                    pn++;
+                }
                 while (str[p] == ";" || str[p] == "%") // если мы встретили : или скобки комментария
                 {
                     if (str[p] == "%")
                     {
+                        
                         p++;
                         pn++;
                         //MessageBox.Show($"Найдено начало комментария");
@@ -201,15 +216,26 @@ namespace Analizator
                 //    rt += " | " + y;
                 //}
                 //MessageBox.Show(rt);
+                //if (ident.Contains(str[p]))
+                //{
+                //    identType.Add(str[p], false);
+                //}
+                
                 if (str[p] == "end")
                 {
                     MessageBox.Show("Найден конец программы");
-                    //SemanticAnalizator semantic = new SemanticAnalizator();
-                    foreach (var s in identType)
-                    {
-                        MessageBox.Show(s.ToString());
-                    }
-                    //_form.CatchError($"Найден конец программы.");
+                    SemanticAnalizator semantic = new SemanticAnalizator(identType,_initializedVariables,operationsAssignments,expression);
+                    semantic.StartSemanticAnalyzer();
+                    MessageBox.Show("Синтактический анализ завершён успешно");
+
+                    //foreach (var s in operationsAssignments)
+                    //{
+                    //    MessageBox.Show(s.ToString());
+                    //}
+                    //foreach (var s in )
+                    //{
+                    //    MessageBox.Show(s.ToString());
+                    //}
                     break;
                 }
 

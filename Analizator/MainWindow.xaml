@@ -11,8 +11,16 @@
             <RowDefinition Height="100"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Width="100" Height="100" Click="Button_Click"></Button>
-        <TextBlock Name="LargeTextBox" Grid.Row="2" >begin end</TextBlock>
-
+        <Button Width="100" Height="100" Click="Button_Click">Запустить анализатор</Button>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        <TextBlock Name="LargeTextBox" >begin end</TextBlock>
+            <TextBox x:Name="enter" Grid.Column="1" AcceptsReturn="True"></TextBox>
+            <TextBlock Name="LargeTextBo" Grid.Column="2" >begin end</TextBlock>
+        </Grid>
     </Grid>
 </Window>

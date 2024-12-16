@@ -159,7 +159,16 @@ namespace Analizator
         {
             string result = "";
             bool hasEnd = false;
+            while (programStr.Contains("\n")) { programStr = programStr.Replace("\n", " "); }
+            while (programStr.Contains("\r")) { programStr = programStr.Replace("\r", " "); }
             string[] programStrArr = programStr.Split(' ');
+            
+            string y = "";
+            foreach (string t in programStrArr)
+            {
+                y += t + "|";
+            }
+            LargeTextBo.Text = y;
             for (int i = 0; i < programStrArr.Length; i++)
             {
                 if (programStrArr[i] == "end")
@@ -199,6 +208,7 @@ namespace Analizator
 
             if (!hasEnd)
             {
+                MessageBox.Show(programStrArr[programStrArr.Length-1]); 
                 MessageBox.Show("Программа должна заканчиваться на end!");
             }
             int po = 0;
@@ -573,13 +583,13 @@ namespace Analizator
     private void Button_Click(object sender, RoutedEventArgs e)
         {
             //string enteredText = LargeTextBox.Text;
-            string enteredText = "begin var startIndex , endIndex , i : int ; var isFound : float ; var Atrive : bool ; startIndex := 100d ; endIndex := 231d ; isFound := 12.123E+12 ; % true if index found % for i := 0d to i LT endIndex step i := i plus 1d writeln i next if ( i NE startIndex ) writeln i ; else readln i ; while ( endIndex LE startIndex ) writeln endIndex or 1d ; end";
+            string enteredText = "begin var startIndex , endIndex , i : int ; var isFound : float ; var Atrive : bool ; startIndex := 100d ; endIndex := 2.31d ; isFound := 12.123E+12 ; isFound := 140d div 70d ; % true if index found % for i := 0d to i LT endIndex step i := i plus 1d writeln i next if ( i NE startIndex ) writeln i ; else readln i ; while ( endIndex LE startIndex ) writeln endIndex or 1d ; end";
             //string enteredText = "begin dim startIndex , 135d endIndex, i %;dim isFound !;dim Atrive $;startIndex = 100d ; let endIndex = 23.1; isFound = 12.123E+12; /* true if index found */ for ( i ; i < endIndex; i = i + 1d) output (i); if i <> startIndex; then output(i); else input (i) end_else; do while endIndex <= startIndex output (endIndex or 1d) loop; 245 end";
             string v = StartLexicalAnalyzer(enteredText);
             LargeTextBox.Text = v;
-            SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants);
+            SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants,enteredText);
             syntactic.CheckProgram(enteredText);
-            
+            //LargeTextBo.Text = enter.Text;
             //MessageBox.Show(v);
         }
 

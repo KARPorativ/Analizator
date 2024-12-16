@@ -27,14 +27,17 @@ namespace Analizator
 
         public void StartSemanticAnalyzer()
         {
+            bool ch = true;
             if (!CheckInitialized())
             {
+                ch = false;
                 MessageBox.Show("Не инициализированная переменная");
                 //_form.CatchError($"Не инициализированная переменная");
             }
             if (!CheckDiv())
             {
-                MessageBox.Show("Нельзя присвоить % переменной вещественное число");
+                ch = false;
+                MessageBox.Show("Нельзя присвоить int переменной вещественное число");
                 //_form.CatchError($"Нельзя присвоить % переменной вещественное число");
             }
             //if (!CheckAssignment())
@@ -42,6 +45,9 @@ namespace Analizator
             //    MessageBox.Show("Переменной задается не верный тип");
             //    //_form.CatchError($"Переменной задается не верный тип");
             //}
+            if (ch) {
+                MessageBox.Show("Семантический анализ завершён успешно");
+            }
         }
 
         //public bool CheckAssignment()
@@ -96,8 +102,10 @@ namespace Analizator
 
                 for (int i = 1; i < itemArr.Length; i++)
                 {
-                    if (itemArr[i] == "/" && (type == "int" || type == "bool"))
+                    if (itemArr[i] == "div" && (type == "int" || type == "bool"))
                     {
+                        MessageBox.Show(itemArr[i]);
+                        MessageBox.Show(type);
                         return false;
                     }
                 }
