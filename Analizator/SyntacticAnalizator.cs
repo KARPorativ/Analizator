@@ -103,7 +103,7 @@ namespace Analizator
                 //else if (descriptionStructure[i] == "{identifier}" && _identificators.FirstOrDefault(item=>item.valueIdentificator.Contains(str[p]))
                 else if (descriptionStructure[i] == "{identifier}" && _identificators.Any(item => item.valueIdentificator == str[p]))
                 {
-                    
+                    identType.Add(str[p], false);
                     tempInd.Add(str[p]);
                     typePer.Add(str[p],"null");
                     p++;
@@ -232,7 +232,7 @@ namespace Analizator
                     //{
                     //    MessageBox.Show(s.ToString());
                     //}
-                    //foreach (var s in )
+                    //foreach (var s in identType)
                     //{
                     //    MessageBox.Show(s.ToString());
                     //}

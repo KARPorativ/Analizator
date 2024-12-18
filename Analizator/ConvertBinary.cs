@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Analizator
 {
@@ -13,15 +14,39 @@ namespace Analizator
     {
         public static string ConvertDecimal(string num)
         {
+            try
+            {
             return Convert.ToString(Convert.ToInt32(num), 2);
+            }
+            catch
+            {
+                MessageBox.Show($"Некорректный ввод двоичного числа {num}b");
+                return "";
+            }
         }
         public static string ConvertOctal(string num)
         {
-            return Convert.ToString(Convert.ToInt32(num, 8), 2);
+            try
+            {
+                return Convert.ToString(Convert.ToInt32(num, 8), 2);
+            }
+            catch 
+            {
+                MessageBox.Show($"Некорректный ввод восьмеричного числа {num}o");
+                return "";
+            }
         }
         public static string ConvertHEX(string num)
         {
+            try
+            {
             return Convert.ToString(Convert.ToInt32(num, 16), 2);
+            }
+            catch
+            {
+                MessageBox.Show($"Некорректный ввод шестнадцатиричного числа {num}h");
+                return "";
+            }
         }
         public static string ConvertReal(string num)
         {
