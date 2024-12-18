@@ -522,11 +522,12 @@ namespace Analizator
             {
                 if (str[i] != '0' && str[i] != '1')
                 {
+                    MessageBox.Show($"Неверный формат двоичного числа {str}");
                     return false;
                 }
                 else
                 {
-                    MessageBox.Show("dfssss");
+                    
                 }
                 i++;
             }
@@ -600,7 +601,7 @@ namespace Analizator
     private void Button_Click(object sender, RoutedEventArgs e)
         {
             //string enteredText = LargeTextBox.Text;
-            string enteredText = "begin var startIndex , endIndex , i : int ; var isFound : float ; var Atrive : bool ; startIndex := 12400b ; endIndex := 2.31d ; Atrive := false ; isFound := 12.123E+12 ; isFound := 140d div 70d ; % true if index found % for i := 0d to i LT endIndex step i := i plus 1d writeln i next if ( i NE startIndex ) writeln i ; else readln i ; while ( endIndex LE startIndex ) writeln endIndex or 1d ; end";
+            string enteredText = "begin var startIndex , endIndex , i : int ; var isFound : float ; var Atrive : bool ; startIndex := 1040o ; endIndex := 2.31d ; Atrive := false ; isFound := 12.123E+12 ; isFound := 140d div 70d ; % true if index found % for i := 0d to i LT endIndex step i := i plus 1d writeln i next if ( i NE startIndex ) writeln i ; else readln i ; while ( endIndex LE startIndex ) writeln endIndex or 1d ; end";
             //string enteredText = "begin dim startIndex , 135d endIndex, i %;dim isFound !;dim Atrive $;startIndex = 100d ; let endIndex = 23.1; isFound = 12.123E+12; /* true if index found */ for ( i ; i < endIndex; i = i + 1d) output (i); if i <> startIndex; then output(i); else input (i) end_else; do while endIndex <= startIndex output (endIndex or 1d) loop; 245 end";
             string v = StartLexicalAnalyzer(enteredText);
             LargeTextBox.Text = v;

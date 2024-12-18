@@ -9,6 +9,7 @@ using System.Xml;
 
 namespace Analizator
 {
+    //v5
     internal class SyntacticAnalizator
     {
         public Dictionary<string, string> _initializedVariables = new Dictionary<string, string>();
