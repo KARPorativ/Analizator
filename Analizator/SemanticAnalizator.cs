@@ -45,6 +45,11 @@ namespace Analizator
             //    MessageBox.Show("Переменной задается не верный тип");
             //    //_form.CatchError($"Переменной задается не верный тип");
             //}
+            if (!CheckBool())
+            {
+                ch = false;
+                MessageBox.Show("Нельзя присвоить bool переменной данное значение");
+            }
             if (ch) {
                 MessageBox.Show("Семантический анализ завершён успешно");
             }
@@ -103,6 +108,32 @@ namespace Analizator
                 for (int i = 1; i < itemArr.Length; i++)
                 {
                     if (itemArr[i] == "div" && (type == "int" || type == "bool"))
+                    {
+                        MessageBox.Show(itemArr[i]);
+                        MessageBox.Show(type);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        public bool CheckBool()
+        {
+            foreach (var item in operationsAssignments)
+            {
+                MessageBox.Show(item);
+                string[] itemArr = item.Split(' ');
+                string type = "";
+                string id = itemArr[0];
+                if (_initializedVariables.ContainsKey(id))
+                {
+                    type = _initializedVariables[id];
+                }
+
+                for (int i = 1; i < itemArr.Length; i++)
+                {
+                    //MessageBox.Show(type);
+                    if ((itemArr[i] == "true"|| itemArr[i] == "false") && (type == "int" || type == "float"))
                     {
                         MessageBox.Show(itemArr[i]);
                         MessageBox.Show(type);

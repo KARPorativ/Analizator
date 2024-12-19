@@ -65,6 +65,7 @@ namespace Analizator
                     if (p == -1)
                     {
                         MessageBox.Show("Неверное описание переменных в программе.");
+                       
                         MessageBox.Show("Синтаксический тест завершиться с ошибкой.");
                         //_form.CatchError($"Неверное описание переменных в программе.");
                         //_form.CatchError($"Синтаксический тест завершиться с ошибкой.");
@@ -94,6 +95,7 @@ namespace Analizator
             for (int i = 0; i < descriptionStructure.Length; i++)
             {
                 
+                    MessageBox.Show(str[i]);
                 if (descriptionStructure[i] == str[p])
                 {
             
@@ -225,9 +227,9 @@ namespace Analizator
                 if (str[p] == "end")
                 {
                     MessageBox.Show("Найден конец программы");
+                    MessageBox.Show("Синтактический анализ завершён успешно");
                     SemanticAnalizator semantic = new SemanticAnalizator(identType,_initializedVariables,operationsAssignments,expression);
                     semantic.StartSemanticAnalyzer();
-                    MessageBox.Show("Синтактический анализ завершён успешно");
 
                     //foreach (var s in operationsAssignments)
                     //{
@@ -668,7 +670,7 @@ namespace Analizator
                 }
                 else
                 {
-                    MessageBox.Show("Не найдена операция присваиванияуeddd", str[p]);
+                    MessageBox.Show("Не найдена операция присваивания", str[p]);
                     //_form.CatchError($"Не найдена операция присваивания");
                     return false;
                 }
@@ -695,7 +697,7 @@ namespace Analizator
                     }
                     else
                     {
-                        MessageBox.Show("Не найдена операция присваиванияdggdfgggg");
+                        MessageBox.Show("Не найдена операция присваивания");
                         //_form.CatchError($"Не найдена операция присваивания");
                         return false;
                     }
@@ -778,7 +780,7 @@ namespace Analizator
             {
                 if (num[num.Length - 1] == 'b' || num[num.Length - 1] == 'd' || num[num.Length - 1] == 'o' || num[num.Length - 1] == 'h' || num[num.Length - 1] == 'r' || num[num.Length - 1] == 'e')
                     {
-                    //MessageBox.Show(num);
+                    
                     return true;
                 }
                 else return false;

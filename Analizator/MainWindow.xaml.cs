@@ -161,7 +161,7 @@ namespace Analizator
             string result = "";
             bool hasEnd = false;
             while (programStr.Contains("\n")) { programStr = programStr.Replace("\n", " "); }
-            while (programStr.Contains("\r")) { programStr = programStr.Replace("\r", " "); }
+            while (programStr.Contains("\r")) { programStr = programStr.Replace("\r", ""); }
             string[] programStrArr = programStr.Split(' ');
             
             string y = "";
@@ -209,7 +209,7 @@ namespace Analizator
 
             if (!hasEnd)
             {
-                MessageBox.Show(programStrArr[programStrArr.Length-1]); 
+                //MessageBox.Show(programStrArr[programStrArr.Length-1]); 
                 MessageBox.Show("Программа должна заканчиваться на end!");
             }
             int po = 0;
@@ -345,7 +345,7 @@ namespace Analizator
         /// перевод чисел в машинный код
         public string ConvertNum(string num, char numCC)
         {
-            MessageBox.Show(num);
+            
             switch (numCC)
             {
                 case 'b':
@@ -472,13 +472,23 @@ namespace Analizator
 
                     if (str[i] == '+' || str[i] == '-')
                     {
-                        if (str[i - 1] != 'e' && str[i - 1] != 'E')
+                        if (Char.IsDigit(str[i - 2]))
                         {
-                            return false;
+
+
+                            if (str[i - 1] != 'e' && str[i - 1] != 'E')
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                indexPlusOrMin = true;
+                            }
                         }
                         else
                         {
-                            indexPlusOrMin = true;
+                            MessageBox.Show($"Неправильная экспонецальная форма числа {str}");
+                            return false ;
                         }
                     }
                 }
@@ -556,15 +566,21 @@ namespace Analizator
         public bool CheckDecimalNumber(string str, char lastChar)
         {
             int i = 0;
+           
             while (str[i] != lastChar)
             {
-                if (str[i] < '0' || str[i] > '9')
+                
+                if ( str[i] < '0' || str[i] > '9' )
                 {
+                    MessageBox.Show($"Неверный формат десятиричного числа {str}");
                     return false;
                 }
                 i++;
             }
             return true;
+
+            
+           
         }
 
 
@@ -575,14 +591,16 @@ namespace Analizator
             {
             if (str[0] < '0' || str[0] > '9')
             {
-                return false;
+                    MessageBox.Show($"Неверный формат шестнадцатиричного числа {str}");
+                    return false;
             }
             int i = 1;
             while (str[i] != lastChar)
             {
                 if ((str[i] < '0' || str[i] > '9') && (str[i] < 'A' || str[i] > 'F') && (str[i] < 'a' || str[i] > 'f'))
                 {
-                    return false;
+                        MessageBox.Show($"Неверный формат шестнадцатиричного числа {str}");
+                        return false;
                 }
                 i++;
             }
@@ -591,7 +609,7 @@ namespace Analizator
             }
             catch
             {
-                MessageBox.Show($"Некорректный ввод восьмеричного числа {str}o");
+                MessageBox.Show($"Некорректный ввод шестнадцатиричного числа {str}o");
                 return true;
             }
         }
@@ -600,20 +618,34 @@ namespace Analizator
 
     private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //string enteredText = LargeTextBox.Text;
-            string enteredText = "begin var startIndex , endIndex , i : int ; var isFound : float ; var Atrive : bool ; startIndex := 1040o ; endIndex := 2.31d ; Atrive := false ; isFound := 12.123E+12 ; isFound := 140d div 70d ; % true if index found % for i := 0d to i LT endIndex step i := i plus 1d writeln i next if ( i NE startIndex ) writeln i ; else readln i ; while ( endIndex LE startIndex ) writeln endIndex or 1d ; end";
-            //string enteredText = "begin dim startIndex , 135d endIndex, i %;dim isFound !;dim Atrive $;startIndex = 100d ; let endIndex = 23.1; isFound = 12.123E+12; /* true if index found */ for ( i ; i < endIndex; i = i + 1d) output (i); if i <> startIndex; then output(i); else input (i) end_else; do while endIndex <= startIndex output (endIndex or 1d) loop; 245 end";
-            string v = StartLexicalAnalyzer(enteredText);
+
+            //string enteredText = "begin var startIndex , endIndex , i : int ; var isFound : float ; var Atrive : bool ; startIndex := 1090d ; endIndex := 231d ; Atrive := 10d ; isFound := 12.5E+12 ; isFound := 140d div 70d ; % true if index found % for i := 0d to i LT endIndex step i := i plus 1d writeln i next if ( i NE startIndex ) writeln i ; else readln i ; while ( endIndex LE startIndex ) writeln endIndex or 1d ; end";
+            //string v = StartLexicalAnalyzer(enteredText);
+            //LargeTextBox.Text = v;
+            //SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants,enteredText);
+            //syntactic.CheckProgram(enteredText);
+
+            string v = StartLexicalAnalyzer(enter.Text);
             LargeTextBox.Text = v;
-            SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants,enteredText);
-            syntactic.CheckProgram(enteredText);
-            //LargeTextBo.Text = enter.Text;
-            //MessageBox.Show(v);
+            SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants, enter.Text);
+            syntactic.CheckProgram(enter.Text);
         }
 
         
     }
-
+    //string[] e;
+    //string t = "";
+    //    forech( CleanUpVirtualizedItemEventHandler tg rgvbf uyjr)
+    //    {
+    //        if(7? || f?)
+    //        {
+    //            t = t + tg;
+    //        }
+    //        else
+    //        {
+    //            e.Add(t);
+    //        }
+    //    }
     
 }
 
