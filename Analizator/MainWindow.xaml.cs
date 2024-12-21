@@ -160,17 +160,36 @@ namespace Analizator
         {
             string result = "";
             bool hasEnd = false;
-            while (programStr.Contains("\n")) { programStr = programStr.Replace("\n", " "); }
-            while (programStr.Contains("\r")) { programStr = programStr.Replace("\r", ""); }
-            string[] programStrArr = programStr.Split(' ');
-            
+            //while (programStr.Contains("\n")) { programStr = programStr.Replace("\n", " "); }
+            //while (programStr.Contains("\r")) { programStr = programStr.Replace("\r", ""); }
+            //string[] programStrArr = programStr.Split(' ');
+
+            char[] resultLeks = programStr.ToCharArray();
+            List<string> programStrArr = new List<string>();
+
+            string leks = "";
+            foreach (char simbol in resultLeks)
+            {
+                if (Char.IsLetter(simbol) || Char.IsDigit(simbol))
+                {
+                    leks += simbol;
+                }
+                else
+                {
+                    programStrArr.Add(leks);
+                }
+            }
+            //foreach (string str in programStrArr)
+            //{
+            //    MessageBox.Show(str);
+            //}
             string y = "";
             foreach (string t in programStrArr)
             {
                 y += t + "|";
             }
             LargeTextBo.Text = y;
-            for (int i = 0; i < programStrArr.Length; i++)
+            for (int i = 0; i < programStrArr.Count; i++)
             {
                 if (programStrArr[i] == "end")
                 {
@@ -627,8 +646,12 @@ namespace Analizator
 
             string v = StartLexicalAnalyzer(enter.Text);
             LargeTextBox.Text = v;
-            SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants, enter.Text);
-            syntactic.CheckProgram(enter.Text);
+            string karp = enter.Text;
+            while (karp.Contains("\n")) { karp = karp.Replace("\n", " "); }
+            while (karp.Contains("\r")) { karp = karp.Replace("\r", ""); }
+            //string[] programStrArr = karp.Split(' ');
+            SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants, karp);
+            syntactic.CheckProgram(karp);
         }
 
         

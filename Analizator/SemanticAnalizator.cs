@@ -55,43 +55,7 @@ namespace Analizator
             }
         }
 
-        //public bool CheckAssignment()
-        //{
-        //    foreach (var item in operationsAssignments)
-        //    {
-        //        string[] itemArr = item.Split(' ');
-        //        string type = "";
-        //        string id = itemArr[0];
-        //        if (_initializedVariables.ContainsKey(id))
-        //        {
-        //            type = _initializedVariables[id];
-        //        }
-        //        if (id == "var")
-        //        {
-        //            id = itemArr[1];
-        //            type = _initializedVariables[id];
-        //        }
-
-        //        for (int i = 1; i < itemArr.Length; i++)
-        //        {
-        //            if (_numberWithType.ContainsKey(itemArr[i]) || itemArr[i] == "true" || itemArr[i] == "false")
-        //            {
-        //                if (((itemArr[i] == "true" || itemArr[i] == "false") && type != "bool") || (_numberWithType[itemArr[i]] == type))
-        //                {
-        //                    return false;
-        //                }
-        //            }
-        //            else if (_initializedVariables.ContainsKey(itemArr[i]))
-        //            {
-        //                if (_initializedVariables[itemArr[i]] != type)
-        //                {
-        //                    return false;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return true;
-        //}
+       
 
         public bool CheckDiv()
         {
@@ -117,11 +81,39 @@ namespace Analizator
             }
             return true;
         }
+        //public bool CheckBool()
+        //{
+        //    foreach (var item in operationsAssignments)
+        //    {
+        //        //MessageBox.Show(item);
+        //        string[] itemArr = item.Split(' ');
+        //        string type = "";
+        //        string id = itemArr[0];
+        //        if (_initializedVariables.ContainsKey(id))
+        //        {
+        //            type = _initializedVariables[id];
+        //        }
+
+        //        for (int i = 1; i < itemArr.Length; i++)
+        //        {
+        //            //if ((itemArr[i] == "true"|| itemArr[i] == "false") && (type == "int" || type == "float"))
+        //            //if ((itemArr[i] != "true" || itemArr[i] != "false" || itemArr[i] == ":=") && (type == "bool"))
+        //            if ((itemArr[i] != "true" || itemArr[i] != "false" || itemArr[i] != ":=") && (type == "bool"))
+        //            {
+        //            MessageBox.Show(type);
+        //                MessageBox.Show(itemArr[i]);
+        //                //MessageBox.Show(type);
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //    return true;
+        //}
         public bool CheckBool()
         {
             foreach (var item in operationsAssignments)
             {
-                MessageBox.Show(item);
+                //MessageBox.Show(item);
                 string[] itemArr = item.Split(' ');
                 string type = "";
                 string id = itemArr[0];
@@ -132,16 +124,18 @@ namespace Analizator
 
                 for (int i = 1; i < itemArr.Length; i++)
                 {
-                    //MessageBox.Show(type);
-                    if ((itemArr[i] == "true"|| itemArr[i] == "false") && (type == "int" || type == "float"))
+                    //if ((itemArr[i] == "true"|| itemArr[i] == "false") && (type == "int" || type == "float"))
+                    //if ((itemArr[i] != "true" || itemArr[i] != "false" || itemArr[i] == ":=") && (type == "bool"))
+                    if ((itemArr[i] == "true" || itemArr[i] == "false") && (type == "bool"))
                     {
-                        MessageBox.Show(itemArr[i]);
-                        MessageBox.Show(type);
-                        return false;
+                        //MessageBox.Show(type);
+                        //MessageBox.Show(itemArr[i]);
+                        //MessageBox.Show(type);
+                        return true;
                     }
                 }
             }
-            return true;
+            return false;
         }
         //    public bool CheckInitialized()
         //    {
