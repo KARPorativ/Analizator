@@ -140,7 +140,7 @@ namespace Analizator
         private List<Identificator> _identificators;
         private List<Konstanta> _konstants;
         private List<string> _arrResult;
-
+        List<string> programStrArr = new List<string>();
 
         //List<ServiceWord> serviceWords, List<Separators> separators
         public MainWindow()
@@ -160,23 +160,78 @@ namespace Analizator
         {
             string result = "";
             bool hasEnd = false;
-            //while (programStr.Contains("\n")) { programStr = programStr.Replace("\n", " "); }
-            //while (programStr.Contains("\r")) { programStr = programStr.Replace("\r", ""); }
+            while (programStr.Contains("\n")) { programStr = programStr.Replace("\n", " "); }
+            while (programStr.Contains("\r")) { programStr = programStr.Replace("\r", ""); }
             //string[] programStrArr = programStr.Split(' ');
 
             char[] resultLeks = programStr.ToCharArray();
-            List<string> programStrArr = new List<string>();
+            
 
             string leks = "";
+
+                bool WT=false;
             foreach (char simbol in resultLeks)
             {
+                    //MessageBox.Show(Convert.ToString(simbol));
                 if (Char.IsLetter(simbol) || Char.IsDigit(simbol))
                 {
                     leks += simbol;
                 }
                 else
                 {
-                    programStrArr.Add(leks);
+                    if (simbol == ' ')
+                    {
+                        if (leks == "")
+                        {
+                            continue;
+                        }
+                        programStrArr.Add(leks);
+                        leks = "";
+
+                    }
+                    else if (simbol =='.')
+                    {
+                        leks += simbol;
+                    }
+                    else if (simbol == '+')
+                    {
+                        leks += simbol;
+                    }
+                    else if (simbol == '-')
+                    {
+                        leks += simbol;
+                    }
+                    else if (simbol == ':')
+                    {
+                        WT = true;
+                    }
+                    else if (simbol == '=')
+                    {
+                            //MessageBox.Show(Convert.ToString(simbol), Convert.ToString( WT));
+                        if (WT)
+                        {
+                            WT = false;
+                            programStrArr.Add(":=");
+                        }
+                    }
+                    else
+                    {
+                        
+                        if (WT)
+                        {
+                            WT=false;
+                            programStrArr.Add(":");
+                            
+                        }
+                        if (leks == "")
+                        {
+                            programStrArr.Add(Convert.ToString(simbol));
+                            continue;
+                        }
+                        programStrArr.Add(leks);
+                        leks = "";
+                        programStrArr.Add(Convert.ToString(simbol));
+                    }
                 }
             }
             //foreach (string str in programStrArr)
@@ -651,7 +706,7 @@ namespace Analizator
             while (karp.Contains("\r")) { karp = karp.Replace("\r", ""); }
             //string[] programStrArr = karp.Split(' ');
             SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants, karp);
-            syntactic.CheckProgram(karp);
+            syntactic.CheckProgram(karp, programStrArr);
         }
 
         

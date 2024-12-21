@@ -40,8 +40,10 @@ namespace Analizator
             //}
         }
 
-        public void CheckProgram(string programStr)
+        public void CheckProgram(string programStr, List<string> ps)
         {
+            string[] _ps = ps.ToArray();
+            
             if (!BracketCheck(programStr))// проверяем парность скобок
             {
                 MessageBox.Show("Нарушена парность скобок");
@@ -52,8 +54,10 @@ namespace Analizator
                 MessageBox.Show("Нарушена парность комментария");
                 //_form.CatchError($"Нарушена парность комментария");
             }
+            
             string[] programStructure = ReferenceStrings.Program.Split(' ');
-            string[] programStrArr = programStr.Split(' ');
+
+            //string[] programStrArr = programStr.Split(' ');
             int p = 0;
             for (int i = 0; i < programStructure.Length; i++)
             {
@@ -61,7 +65,7 @@ namespace Analizator
                 if (programStructure[i] == "{description}")
                 {
                     
-                    p = Description(programStrArr, p);
+                    p = Description(_ps, p);
                     if (p == -1)
                     {
                         MessageBox.Show("Неверное описание переменных в программе.");
@@ -75,10 +79,10 @@ namespace Analizator
 
                 if (programStructure[i] == "{body}")
                 {
-                    Body(programStrArr, p);
+                    Body(_ps, p);
                 }
 
-                if (programStrArr[i] == "begin")
+                if (ps[i] == "begin")
                 {
                     p++;
                 }
@@ -93,7 +97,7 @@ namespace Analizator
             List<string> tempInd = new List<string>();
             for (int i = 0; i < descriptionStructure.Length; i++)
             {
-                    
+                MessageBox.Show(str[p]);
                 //MessageBox.Show(str[p]+"2","2");
                 //    MessageBox.Show(descriptionStructure[i]+"y", "3");
                 if (descriptionStructure[i] == str[p])
