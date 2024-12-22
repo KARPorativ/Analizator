@@ -10,35 +10,36 @@ namespace Analizator
 {
     internal class DataTable
     {
-        
-        
 
 
-        
+
+
+
 
 
         public static List<ServiceWord> GetServiceWords()
         {
             return new List<ServiceWord>()
             {
-                new ("yit"),
-                new("begin"),
-                new("end"),
-                new("var"),
-                new("if"),
-                new("else"),
-                new("for"),
-                new("to"),
-                new("step"),
-                new("next"),
-                new("while"),
-                new("readln"),
-                new("writeln"),
-                new("true"),
-                new("false"),
-                new("int"),
-                new("float"),
-                new("bool")
+                 new ("yit"),
+        new("begin"),
+        new("end"),
+        new("assign"),
+        new("if"),
+        new("then"),
+        new("else"),
+        new("for"),
+        new("val"),
+        new("do"),
+        new("while"),
+        new("next"),
+        new("enter"),
+        new("displ"),
+        new("true"),
+        new("false"),
+        new("#"),
+        new("@"),
+        new("&")
             };
         }
         //public List<string> _serviceWords 
@@ -79,28 +80,28 @@ namespace Analizator
             return new List<Separators>()
             {
                 new("+85_"),
-                new("NE"),
-                new("EQ"),
-                new("LT"),
-                new("LE"),
-                new("GT"),
-                new("GE"),
-                new("plus"),
-                new("min"),
-                new("or"),
-                new("mult"),
-                new("div"),
-                new("and"),
-                new(";"),
-                new(","),
-                new(":"),
-                new(":="),
-                new("("),
-                new(")"),
-                new("/n"),
-                new("~"),
-                new("%"),
-                new(" ")
+        new("NEQ"),
+        new("EQV"),
+        new("LOWT"),
+        new("LOWE"),
+        new("GRT"),
+        new("GRE"),
+        new("add"),
+        new("disa"),
+        new("||"),
+        new("umn"),
+        new("del"),
+        new("&&"),
+        new(";"),
+        new(":"),
+        new(","),
+        new("["),
+        new("]"),
+        new("/n"),
+        new("^"),
+        new("{"),
+        new("}"),
+        new(" ")
             };
         }
 

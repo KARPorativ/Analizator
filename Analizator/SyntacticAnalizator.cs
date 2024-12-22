@@ -23,10 +23,11 @@ namespace Analizator
         private List<Konstanta> _numbers;
         List<string> numb;
         string _enterText;
-        
+        bool end = false;
 
-        private List<string> operations = new List<string> { "NE", "EQ", "LT", "LE", "GT", "GE", "plus", "min", "or", "mult", "div", "and", "~" };
-        public SyntacticAnalizator(List<Identificator> identificators, List<Konstanta> numbers,string enterText)
+
+        private List<string> operations = new List<string> { "NEQ", "EQV", "LOWT", "LOWE", "GRT", "GRE", "add", "disa", "||", "umn", "del", "&&", "^" };
+        public SyntacticAnalizator(List<Identificator> identificators, List<Konstanta> numbers, string enterText)
         {
             //_form = form;
             _identificators = identificators;
@@ -43,7 +44,7 @@ namespace Analizator
         public void CheckProgram(string programStr, List<string> ps)
         {
             string[] _ps = ps.ToArray();
-            
+
             if (!BracketCheck(programStr))// проверяем парность скобок
             {
                 MessageBox.Show("Нарушена парность скобок");
@@ -54,7 +55,7 @@ namespace Analizator
                 MessageBox.Show("Нарушена парность комментария");
                 //_form.CatchError($"Нарушена парность комментария");
             }
-            
+
             string[] programStructure = ReferenceStrings.Program.Split(' ');
 
             //string[] programStrArr = programStr.Split(' ');
@@ -64,7 +65,7 @@ namespace Analizator
 
                 if (programStructure[i] == "{description}")
                 {
-                    
+
                     p = Description(_ps, p);
                     if (p == -1)
                     {
@@ -91,88 +92,249 @@ namespace Analizator
         }
 
         /// Инициализация переменных.
+        //public int Description(string[] str, int p)
+        //{
+        //    string[] descriptionStructure = ReferenceStrings.Description.Split(' ');
+        //    List<string> tempInd = new List<string>();
+        //    for (int i = 0; i < descriptionStructure.Length; i++)
+        //    {
+
+        //        if (descriptionStructure[i] == str[p])
+        //        {
+        //            p++;
+        //            continue;
+        //        }
+
+        //        else if (descriptionStructure[i] == "{identifier}" && _identificators.Any(item => item.valueIdentificator == str[p]))
+        //        {
+        //            identType.Add(str[p], false);
+        //            tempInd.Add(str[p]);
+        //            typePer.Add(str[p], "null");
+        //            p++;
+
+        //            continue;
+        //        }
+        //        else if (descriptionStructure[i] == "{type/,}")
+        //        {
+
+        //            if (str[p] == "," && _identificators.Any(item => item.valueIdentificator == str[p + 1]))
+        //            {
+
+        //                p++;
+        //                i -= 2;
+        //                continue;
+        //            }
+        //            if (str[p] == ":")
+        //            {
+        //                p++;
+        //            }
+        //            else return -1;
+
+        //            if (str[p] == "int" || str[p] == "float" || str[p] == "bool")
+        //            {
+
+        //                string CheckSameVar = "";
+        //                for (int j = 0; j < tempInd.Count; j++)
+        //                {
+        //                    CheckSameVar = tempInd[j];
+        //                    for (int x = j + 1; x < tempInd.Count; x++)
+        //                    {
+        //                        if (CheckSameVar == tempInd[x])
+        //                        {
+        //                            MessageBox.Show($"Повторно введена перменная {CheckSameVar}");
+
+        //                            return -1;
+        //                        }
+        //                    }
+
+        //                }
+        //                while (tempInd.Count > 0)
+        //                {
+        //                    _initializedVariables.Add(tempInd[tempInd.Count - 1], str[p]);
+        //                    tempInd.RemoveAt(tempInd.Count - 1);
+        //                }
+        //                p++;
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("Типа данных " + str[p] + " нет");
+        //                return -1;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return -1;
+        //        }
+        //        p++;
+        //        if (str[p] == "var")
+        //        {
+        //            p = Description(str, p);
+        //        }
+        //    }
+        //    return p;
+        //}
+
+
+
+        //public int Description(string[] str, int p)
+        //{
+        //    string[] descriptionStructure = ReferenceStrings.Description.Split(' ');
+        //    List<string> tempInd = new List<string>();
+        //    for (int i = 0; i < descriptionStructure.Length; i++)
+        //    {
+        //        MessageBox.Show(descriptionStructure[i]);
+        //        if (descriptionStructure[i] == "{type/,}")
+        //        {
+        //            if (str[p] == "#" || str[p] == "@" || str[p] == "&")
+        //            {
+        //                p++;
+        //                if (str[p] == ":")
+        //                {
+        //                            MessageBox.Show(str[p]);
+        //                    p++;
+        //                    if (descriptionStructure[i] == "{identifier}" && _identificators.Any(item => item.valueIdentificator == str[p]))
+        //                    {
+        //                    MessageBox.Show(str[p]);
+        //                        identType.Add(str[p], false);
+        //                        tempInd.Add(str[p]);
+        //                        typePer.Add(str[p], "null");
+        //                        p++;
+        //                        if (str[p] == "," && _identificators.Any(item => item.valueIdentificator == str[p + 1]))
+        //                        {
+        //                            p++;
+        //                            i -= 1;
+        //                            continue;
+        //                        }
+        //                    }
+
+
+        //                }
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("e1");
+        //                return -1;
+        //            }
+        //        }
+        //        //else
+        //        //{
+        //        //    MessageBox.Show("e2");
+        //        //    return -1;
+        //        //}
+        //        //MessageBox.Show(str[p]);
+        //        //MessageBox.Show(str[p]+"2","2");
+        //        //    MessageBox.Show(descriptionStructure[i]+"y", "3");
+        //    }
+        //    return p;
+        //}
+        //public int Description(string[] str, int p)
+        //{
+
+        //    List<string> tempInd = new List<string>();
+        //    if (str[p] == "#" || str[p] == "@" || str[p] == "&")
+        //    {
+        //        p++;
+        //        if (str[p] == ":")
+        //        {
+        //            p++;
+        //            if (_identificators.Any(item => item.valueIdentificator == str[p]))
+        //            {
+        //                bool cg = true;
+        //                while (cg)
+        //                {
+        //                MessageBox.Show(str[p]);
+        //                identType.Add(str[p], false);
+        //                tempInd.Add(str[p]);
+        //                typePer.Add(str[p], "null");
+        //                p++;
+        //                if (str[p] == "," && _identificators.Any(item => item.valueIdentificator == str[p + 1]))
+        //                {
+        //                        p++;
+        //                }
+        //                    else {
+        //                        cg = false;
+        //                    }
+
+        //                }
+        //                return p;
+        //            }
+
+        //        }
+        //    }
+        //    return -1;
+
+        //}
         public int Description(string[] str, int p)
         {
-            string[] descriptionStructure = ReferenceStrings.Description.Split(' ');
             List<string> tempInd = new List<string>();
-            for (int i = 0; i < descriptionStructure.Length; i++)
-            {
-                MessageBox.Show(str[p]);
-                //MessageBox.Show(str[p]+"2","2");
-                //    MessageBox.Show(descriptionStructure[i]+"y", "3");
-                if (descriptionStructure[i] == str[p])
+            //while (str[p] == "#" || str[p] == "@" || str[p] == "&")
+            
+                // Проверяем, что на текущей позиции находится тип
+                if (str[p] != "#" && str[p] != "@" && str[p] != "&")
                 {
-                    p++;
-                    continue;
+                    MessageBox.Show("Ожидается тип данных.");
+                    return -1;
                 }
-                //else if (descriptionStructure[i] == "{identifier}" && _identificators.Contains(str[p]))
-                //else if (descriptionStructure[i] == "{identifier}" && _identificators.FirstOrDefault(item=>item.valueIdentificator.Contains(str[p]))
-                else if (descriptionStructure[i] == "{identifier}" && _identificators.Any(item => item.valueIdentificator == str[p]))
-                {
-                    identType.Add(str[p], false);
-                    tempInd.Add(str[p]);
-                    typePer.Add(str[p],"null");
-                    p++;
-                    
-                    continue;
-                }
-                else if (descriptionStructure[i] == "{type/,}")
-                {
-                    
-                    if (str[p] == "," && _identificators.Any(item => item.valueIdentificator == str[p + 1]))
-                    {
-                        
-                        p++;
-                        i -= 2;
-                        continue;
-                    }
-                    if (str[p] == ":")
-                    {
-                        p++;
-                    }
-                    else return -1;
-                    
-                    if (str[p] == "int" || str[p] == "float" || str[p] == "bool")
-                    {
-                        
-                        string CheckSameVar = "";
-                        for (int j = 0; j < tempInd.Count; j++)
-                        {
-                            CheckSameVar = tempInd[j];
-                            for (int x = j + 1; x < tempInd.Count; x++)
-                            {
-                                if (CheckSameVar == tempInd[x])
-                                {
-                                    MessageBox.Show($"Повторно введена перменная {CheckSameVar}");
-                                    //_form.CatchError($"Повторно введена перменная {CheckSameVar}");
-                                    return -1;
-                                }
-                            }
 
-                        }
-                        while (tempInd.Count > 0)
+                string currentType = str[p];
+                p++;
+
+                // Проверяем, что следующий элемент - это ':'
+                if (str[p] != ":")
+                {
+                    MessageBox.Show("Ожидается ':'.");
+                    return -1;
+                }
+                p++;
+
+                // Обрабатываем идентификаторы
+                while (true)
+                {
+                    if (_identificators.Any(item => item.valueIdentificator == str[p]))
+                    {
+                        if (tempInd.Contains(str[p]))
                         {
-                            _initializedVariables.Add(tempInd[tempInd.Count - 1], str[p]);
-                            tempInd.RemoveAt(tempInd.Count - 1);
+                            MessageBox.Show($"Повторно введена переменная {str[p]}");
+                            return -1;
                         }
+
+                        tempInd.Add(str[p]);
+                        identType.Add(str[p], false);
+                        typePer.Add(str[p], currentType);
                         p++;
                     }
                     else
                     {
-                        MessageBox.Show("Типа данных " + str[p] + " нет");
+                        MessageBox.Show($"Недопустимый идентификатор {str[p]}");
                         return -1;
                     }
+
+                    // Проверяем, есть ли следующий идентификатор
+                    if (str[p] == ",")
+                    {
+                        p++;
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
+
+                // Добавляем переменные в список и очищаем временный список
+                foreach (var identifier in tempInd)
                 {
-                    return -1;
+                    _initializedVariables.Add(identifier, currentType);
                 }
-                p++;
-                if (str[p] == "var")
+                
+                // Проверяем, следует ли ещё одно описание
+                if (p < str.Length && (str[p+1] == "#" || str[p+1] == "@" || str[p+1] == "&"))
                 {
+                    p++;
                     p = Description(str, p);
                 }
-            }
+            
+
             return p;
         }
 
@@ -183,40 +345,40 @@ namespace Analizator
         {
             string[] bodyStructure = ReferenceStrings.Body.Split(' ');
             int pn = p;
-            while (str[p] != "end")
+            while (!(str[p] == "end" && end == true))
             {
-                
+
                 if (str[p] == "/n")
                 {
-                    
+
                     p++;
                     pn++;
                 }
-                while (str[p] == ";" || str[p] == "%") // если мы встретили : или скобки комментария
+                while (str[p] == ";" || str[p] == "{") // если мы встретили : или скобки комментария
                 {
-                    if (str[p] == "%")
+                    if (str[p] == "{")
                     {
-                        
+
                         p++;
                         pn++;
                         //MessageBox.Show($"Найдено начало комментария");
-                        while (str[p] != "%")
-                        {  
+                        while (str[p] != "}")
+                        {
                             p++;
                             pn++;
-                            
+
                         }
                         //_form.CatchError($"Найдено начало комментария");
                     }
-                    if (str[p] == "%")
+                    if (str[p] == "}")
                     {
                         //MessageBox.Show("Найден конец комментария");
-                        
+
                     }
                     p++;
                     pn++;
                 }
-                
+
                 //foreach (string y in ident)
                 //{
                 //    rt += " | " + y;
@@ -226,12 +388,12 @@ namespace Analizator
                 //{
                 //    identType.Add(str[p], false);
                 //}
-                
-                if (str[p] == "end")
+                //MessageBox.Show(str[p]);
+                if (str[p] == "end" && end == false)
                 {
                     MessageBox.Show("Найден конец программы");
                     MessageBox.Show("Синтактический анализ завершён успешно");
-                    SemanticAnalizator semantic = new SemanticAnalizator(identType,_initializedVariables,operationsAssignments,expression);
+                    SemanticAnalizator semantic = new SemanticAnalizator(identType, _initializedVariables, operationsAssignments, expression);
                     semantic.StartSemanticAnalyzer();
 
                     //foreach (var s in operationsAssignments)
@@ -269,58 +431,126 @@ namespace Analizator
             return isAssignment(str, ref p) || isFor(str, ref p) || isIf(str, ref p) || isWhile(str, ref p) || isWrite(str, ref p) || isReadLn(str, ref p);
         }
 
-       
+
+        //public bool isIf(string[] str, ref int p)
+        //{
+        //    if (str[p] == "if")
+        //    {
+
+        //        p++;
+        //        if (str[p] == "(")
+        //        {
+        //            p++;
+        //            if (isExpression(str, ref p, true))
+        //            {
+
+        //                if (str[p] == ")")
+        //                {
+        //                    p++;
+        //                    if (CheckOperator(str, ref p))
+        //                    {
+        //                        p++;
+
+        //                        if (str[p] == "else")
+        //                        {
+        //                            p++;
+        //                            if (CheckOperator(str, ref p))
+        //                            {
+        //                                p++;
+        //                                return true;
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            return true;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("В if нехватает выражения");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("В if нет (");
+        //        }
+        //    }
+        //    return false;
+        //}
         public bool isIf(string[] str, ref int p)
         {
             if (str[p] == "if")
             {
-                
+                end = true;
                 p++;
-                if (str[p] == "(")
+
+                if (isExpression(str, ref p, true))
                 {
-                    p++;
-                    if (isExpression(str, ref p, true))
+
+                    if (str[p] == "then")
                     {
-                        
-                        if (str[p] == ")")
+                        p++;
+                        if (CheckOperator(str, ref p))
                         {
-                            p++;
-                            if (CheckOperator(str, ref p))
+                            
+
+                            if (str[p] == "else")
                             {
                                 p++;
-                                
-                                if (str[p] == "else")
+                                if (CheckOperator(str, ref p))
                                 {
-                                    p++;
-                                    if (CheckOperator(str, ref p))
+                                    //p++;
+                                    
+                                    if (str[p] == "end")
                                     {
-                                        p++;
+                                        end = false;
+                                        //end = true;
+                                        MessageBox.Show(str[p]);
                                         return true;
                                     }
-                                }
-                                else
-                                {
-                                    return true;
+                                    else
+                                    {
+                                        MessageBox.Show("Условный оператор должен заканчиваться на end");
+                                    }
+
                                 }
                             }
+                            //else
+                            //{
+                            //    return true;
+                            //}
+                            if (str[p] == "end")
+                            {
+                                end = false;
+                                //end = true ;
+                                return true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Условный оператор должен заканчиваться на end");
+                            }
                         }
+
                     }
                     else
                     {
-                        MessageBox.Show("В if нехватает выражения");
+                        MessageBox.Show("В условном операторе пропущенно then");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("В if нет (");
+                    MessageBox.Show("В if нехватает выражения");
                 }
+
             }
             return false;
         }
 
 
 
-       
+
         private bool isReadLn(string[] str, ref int p)
         {
             if (str[p] == "readln")
@@ -353,63 +583,98 @@ namespace Analizator
             }
             return false;
         }
-        
+
 
         private bool isWrite(string[] str, ref int p)
         {
-            if (str[p] == "writeln")
+            if (str[p] == "displ")
             {
                 p++;
+                //MessageBox.Show(str[p]);
                 if (isExpression(str, ref p, true))
-                { 
+                {
                     if (str[p] == ",")
                     {
                         p++;
                         if (isExpression(str, ref p, true))
                         {
-                            return true ;
+                            return true;
                         }
                         else
                         {
-                            return false ;
+                            return false;
                         }
                     }
                     else
                     {
-                        return true ;
+                        return true;
                     }
                 }
                 else
                 {
                     return false;
                 }
-                
+
             }
             else return false;
         }
 
-        
+
+        //private bool isWhile(string[] str, ref int p)
+        //{
+        //    if (str[p] == "while")
+        //    {
+
+        //        p++;
+        //        if (str[p] == "(")
+        //        {
+        //            p++;
+        //            if (isExpression(str, ref p, true))
+        //            {
+        //                if (str[p] == ")")
+        //                {
+        //                    p++;
+        //                    if (CheckOperator(str, ref p))
+        //                    {
+        //                        return true;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
         private bool isWhile(string[] str, ref int p)
         {
             if (str[p] == "while")
             {
-                
                 p++;
-                if (str[p] == "(")
+                if (isExpression(str, ref p, true))
                 {
-                    p++;
-                    if (isExpression(str, ref p, true))
+                    if (str[p] == "do")
                     {
-                        if (str[p] == ")")
+                        p++;
+                        if (CheckOperator(str, ref p))
                         {
-                            p++;
-                            if (CheckOperator(str, ref p))
+                            if (str[p] == "next")
                             {
-                                return true ;
+                            
+                                p++;
+                                return true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("В цикле while отсутствует next");
                             }
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("В цикле while отсутствует do");
+                    }
+
                 }
+
             }
             return false;
         }
@@ -451,62 +716,113 @@ namespace Analizator
         //    }
         //    return false;
         //}
+        //private bool isFor(string[] str, ref int p)
+        //{
+        //    if (str[p] == "for")
+        //    {
+
+        //        p++;
+        //        if (isAssignment(str, ref p))
+        //        {
+        //            //MessageBox.Show(str[p]);
+        //            //p++;
+        //            if (str[p] == "to")
+        //            {
+
+        //                p++;
+        //                if (isExpression(str, ref p, true))
+        //                {
+
+        //                    //p++;
+        //                    if (str[p] == "step")
+        //                    {
+
+        //                        p++;
+
+        //                        if (isAssignment(str, ref p))
+        //                        {
+
+        //                            p++;
+        //                            if (CheckOperator(str, ref p))
+        //                            {
+        //                                p++;
+
+        //                                if (str[p] == "next")
+        //                                {
+        //                                    return true;
+        //                                }
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            if (CheckOperator(str, ref p))
+        //                            {
+        //                                p++;
+        //                                if (str[p] == "next")
+        //                                {
+        //                                    return true;
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        MessageBox.Show("Отсутствует step");
+        //                    }
+
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return false;
+        //}
         private bool isFor(string[] str, ref int p)
         {
             if (str[p] == "for")
             {
-                
+
                 p++;
                 if (isAssignment(str, ref p))
                 {
                     //MessageBox.Show(str[p]);
                     //p++;
-                    if (str[p] == "to")
+                    if (str[p] == "val")
                     {
-                        
+
                         p++;
                         if (isExpression(str, ref p, true))
                         {
-                            
                             //p++;
-                            if (str[p] == "step")
+                            if (str[p] == "do")
                             {
-                                
+                            
+
                                 p++;
-                                
-                                if (isAssignment(str, ref p))
+
+                                if (CheckOperator(str, ref p))
                                 {
-                                    
-                                    p++;
-                                    if (CheckOperator(str, ref p))
-                                    {
-                                        p++;
-                                        
-                                        if (str[p] == "next")
-                                        {
-                                            return true;
-                                        }
-                                    }
+                                    return true;
                                 }
                                 else
                                 {
-                                    if (CheckOperator(str, ref p))
-                                    {
-                                        p++;
-                                        if (str[p] == "next")
-                                        {
-                                            return true;
-                                        }
-                                    }
+                                    MessageBox.Show("В цикле for отсутствует оператор");
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("Отсутствует step");
+                                MessageBox.Show("Отсутствует do в цикле for");
                             }
 
                         }
+                        else
+                        {
+                            MessageBox.Show("В цикле for отсутствует выражение");
+                        }
                     }
+                }
+                else
+                {
+                    MessageBox.Show("В цикле for отсутствует присваивание");
                 }
             }
             return false;
@@ -519,16 +835,17 @@ namespace Analizator
         {
             if (ident.Contains(str[p]))
             {
-                
                 int startIndex = p;
                 p++;
-                if (str[p] == ":=")
+                if (str[p] == "assign")
                 {
-                    
+                    //MessageBox.Show(str[p] + str[p + 1], str[p-2]);
+
                     p++;
-                    
+
                     if (isExpression(str, ref p))
                     {
+                        //MessageBox.Show(str[p]);
                         operationsAssignments.Add(string.Join(" ", str, startIndex, p - startIndex));
                         identType[str[startIndex]] = true;
                         return true;
@@ -541,7 +858,7 @@ namespace Analizator
                 else
                 {
                     MessageBox.Show("Не найдена операция присваивания ", str[p]);
-                    
+
                     return false;
                 }
             }
@@ -567,7 +884,7 @@ namespace Analizator
                     }
                     else
                     {
-                        MessageBox.Show("Не найдена операция присваивания");           
+                        MessageBox.Show("Не найдена операция присваивания");
                         return false;
                     }
                 }
@@ -648,8 +965,8 @@ namespace Analizator
             if (num[0] == '0' || num[0] == '1' || num[0] == '2' || num[0] == '3' || num[0] == '4' || num[0] == '5' || num[0] == '6' || num[0] == '7' || num[0] == '8' || num[0] == '9')
             {
                 if (num[num.Length - 1] == 'b' || num[num.Length - 1] == 'd' || num[num.Length - 1] == 'o' || num[num.Length - 1] == 'h' || num[num.Length - 1] == 'r' || num[num.Length - 1] == 'e')
-                    {
-                    
+                {
+
                     return true;
                 }
                 else return false;
@@ -657,65 +974,7 @@ namespace Analizator
             return false;
         }
         /// Проверка выражения.
-        //public bool isExpression(string[] str, ref int p, bool addExpression = false)
-        //{
-        //    if (isDigit(str,ref p) || numb.Contains(str[p]) || str[p] == "true" || str[p] == "false")
-        //    {
-        //        int temp = 0;
-        //        int startIndex = p;
-        //        p++;
-        //        bool operation = false;
-        //        while (
-        //            str[p] != ")" &&
-        //            str[p] != ";" &&
-        //            str[p] != "step" &&
-        //            str[p] != "then" &&
-        //            str[p] != "to" &&
-        //            str[p] != "else" &&
-        //            str[p] != "next" &&
-        //            str[p] != "loop")
-        //        {
-        //            if ((ident.Contains(str[p]) || numb.Contains(str[p])) && operation)
-        //            {
-        //                operation = false;
-        //                p++;
-        //            }
-        //            else if (operations.Contains(str[p]) && !operation)
-        //            {
-        //                operation = true;
-        //                p++;
-        //            }
-        //            else if ((ident.Contains(str[p]) || numb.Contains(str[p])) && !operation)
-        //            {
-        //                break;
-        //            }
-        //            else if (str[p] == "output" ||
-        //            str[p] == "if" ||
-        //            str[p] == "for" ||
-        //            str[p] == "input")
-        //            {
-        //                p--;
-        //                temp = 1;
-        //                break;
-        //            }
-        //            else
-        //            {
-        //                return false;
-        //            }
-        //        }
-        //        if (addExpression)
-        //        {
-        //            expression.Add(string.Join(" ", str, startIndex, p - startIndex + temp));
-        //        }
-
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-
-        //}
+        
         public bool isExpression(string[] str, ref int p, bool addExpression = false)
         {
             if (ident.Contains(str[p]) || isDigit(str, ref p) || str[p] == "true" || str[p] == "false")
@@ -725,15 +984,16 @@ namespace Analizator
                 p++;
                 bool operation = false;
                 while (
-                    str[p] != ")" &&
+                    str[p] != "]" &&
                     str[p] != ";" &&
-                    str[p] != "step" &&
+                    str[p] != "end" &&
                     str[p] != "then" &&
-                    str[p] != "to" &&
+                    str[p] != "do" &&
                     str[p] != "else" &&
-                    str[p] != "next" &&
-                    str[p] != ":=" &&
-                    str[p] != "loop")
+                    str[p] != "val" &&
+                    str[p] != "assign" &&
+                    str[p] != "end" &&
+                    str[p] != "next")
                 {
                     if ((ident.Contains(str[p]) || isDigit(str, ref p)) && operation)
                     {
@@ -749,10 +1009,10 @@ namespace Analizator
                     {
                         break;
                     }
-                    else if (str[p] == "writeln" ||
+                    else if (str[p] == "enter" ||
                     str[p] == "if" ||
                     str[p] == "for" ||
-                    str[p] == "readln")
+                    str[p] == "displ")
                     {
                         p--;
                         temp = 1;
@@ -765,7 +1025,7 @@ namespace Analizator
                 }
                 if (addExpression)
                 {
-                    
+
                     expression.Add(string.Join(" ", str, startIndex, p - startIndex + temp));
                 }
 
@@ -804,7 +1064,7 @@ namespace Analizator
             return true;
         }
 
-        
+
         static bool CommentCheck(string s)
         {
             int com = 0;
@@ -826,7 +1086,7 @@ namespace Analizator
     public static class ReferenceStrings
     {
         public static string Program = "begin {description} {body} end";
-        public static string Description = "var {identifier} {type/,}";
+        public static string Description = "{type/,} {identifier}";
         public static string Body = "{operator} : end/{operator}";
     }
 

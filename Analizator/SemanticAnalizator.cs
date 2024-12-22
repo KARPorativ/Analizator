@@ -13,7 +13,7 @@ namespace Analizator
         //private Dictionary<string, string> _numberWithType = new Dictionary<string, string>();
         private List<string> operationsAssignments = new List<string>();
         private List<string> expression = new List<string>();
-        private List<string> operations = new List<string> { "NE", "EQ", "LT", "LE", "GT", "GE", "plus", "min", "or", "mult", "div", "and", "~" };
+        private List<string> operations = new List<string> { "NEQ", "EQV", "LOWT", "LOWE", "GRT", "GRE", "add", "disa", "||", "umn", "del", "&&", "^" };
         public Dictionary<string, bool> _identType = new Dictionary<string, bool>();
         public SemanticAnalizator(Dictionary<string, bool> identType, Dictionary<string, string> initializedVariables, List<string> operationsAssignments, List<string> expression)
         {
@@ -71,7 +71,7 @@ namespace Analizator
 
                 for (int i = 1; i < itemArr.Length; i++)
                 {
-                    if (itemArr[i] == "div" && (type == "int" || type == "bool"))
+                    if (itemArr[i] == "del" && (type == "#" || type == "&"))
                     {
                         MessageBox.Show(itemArr[i]);
                         MessageBox.Show(type);
@@ -81,34 +81,7 @@ namespace Analizator
             }
             return true;
         }
-        //public bool CheckBool()
-        //{
-        //    foreach (var item in operationsAssignments)
-        //    {
-        //        //MessageBox.Show(item);
-        //        string[] itemArr = item.Split(' ');
-        //        string type = "";
-        //        string id = itemArr[0];
-        //        if (_initializedVariables.ContainsKey(id))
-        //        {
-        //            type = _initializedVariables[id];
-        //        }
-
-        //        for (int i = 1; i < itemArr.Length; i++)
-        //        {
-        //            //if ((itemArr[i] == "true"|| itemArr[i] == "false") && (type == "int" || type == "float"))
-        //            //if ((itemArr[i] != "true" || itemArr[i] != "false" || itemArr[i] == ":=") && (type == "bool"))
-        //            if ((itemArr[i] != "true" || itemArr[i] != "false" || itemArr[i] != ":=") && (type == "bool"))
-        //            {
-        //            MessageBox.Show(type);
-        //                MessageBox.Show(itemArr[i]);
-        //                //MessageBox.Show(type);
-        //                return false;
-        //            }
-        //        }
-        //    }
-        //    return true;
-        //}
+        
         public bool CheckBool()
         {
             foreach (var item in operationsAssignments)
@@ -126,7 +99,7 @@ namespace Analizator
                 {
                     //if ((itemArr[i] == "true"|| itemArr[i] == "false") && (type == "int" || type == "float"))
                     //if ((itemArr[i] != "true" || itemArr[i] != "false" || itemArr[i] == ":=") && (type == "bool"))
-                    if ((itemArr[i] == "true" || itemArr[i] == "false") && (type == "bool"))
+                    if ((itemArr[i] == "true" || itemArr[i] == "false") && (type == "&"))
                     {
                         //MessageBox.Show(type);
                         //MessageBox.Show(itemArr[i]);
