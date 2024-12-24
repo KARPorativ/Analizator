@@ -87,6 +87,7 @@ namespace Analizator
                 {
                     p++;
                 }
+                
 
             }
         }
@@ -428,57 +429,34 @@ namespace Analizator
         }
         public bool CheckOperator(string[] str, ref int p)
         {
+            if ((str[p] == "["))
+            {
+                p++;
+
+                if (isAssignment(str, ref p) || isFor(str, ref p) || isIf(str, ref p) || isWhile(str, ref p) || isWrite(str, ref p) || isReadLn(str, ref p))
+                {
+
+                    if (str[p] == ":")
+                    {
+                        p++;
+                        if (isAssignment(str, ref p) || isFor(str, ref p) || isIf(str, ref p) || isWhile(str, ref p) || isWrite(str, ref p) || isReadLn(str, ref p))
+                        {
+                            if (str[p] == "]")
+                            {
+
+                                p++;
+                                return true;
+                            }
+                        }
+                    }
+
+                }
+            }
             return isAssignment(str, ref p) || isFor(str, ref p) || isIf(str, ref p) || isWhile(str, ref p) || isWrite(str, ref p) || isReadLn(str, ref p);
         }
 
 
-        //public bool isIf(string[] str, ref int p)
-        //{
-        //    if (str[p] == "if")
-        //    {
 
-        //        p++;
-        //        if (str[p] == "(")
-        //        {
-        //            p++;
-        //            if (isExpression(str, ref p, true))
-        //            {
-
-        //                if (str[p] == ")")
-        //                {
-        //                    p++;
-        //                    if (CheckOperator(str, ref p))
-        //                    {
-        //                        p++;
-
-        //                        if (str[p] == "else")
-        //                        {
-        //                            p++;
-        //                            if (CheckOperator(str, ref p))
-        //                            {
-        //                                p++;
-        //                                return true;
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            return true;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("В if нехватает выражения");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("В if нет (");
-        //        }
-        //    }
-        //    return false;
-        //}
         public bool isIf(string[] str, ref int p)
         {
             if (str[p] == "if")
@@ -589,10 +567,11 @@ namespace Analizator
         {
             if (str[p] == "displ")
             {
+                
                 p++;
-                //MessageBox.Show(str[p]);
                 if (isExpression(str, ref p, true))
                 {
+                //MessageBox.Show(str[p]);
                     if (str[p] == ",")
                     {
                         p++;
@@ -620,30 +599,7 @@ namespace Analizator
         }
 
 
-        //private bool isWhile(string[] str, ref int p)
-        //{
-        //    if (str[p] == "while")
-        //    {
-
-        //        p++;
-        //        if (str[p] == "(")
-        //        {
-        //            p++;
-        //            if (isExpression(str, ref p, true))
-        //            {
-        //                if (str[p] == ")")
-        //                {
-        //                    p++;
-        //                    if (CheckOperator(str, ref p))
-        //                    {
-        //                        return true;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
+      
         private bool isWhile(string[] str, ref int p)
         {
             if (str[p] == "while")
@@ -679,103 +635,7 @@ namespace Analizator
             return false;
         }
 
-        //private bool isFor(string[] str, ref int p)
-        //{
-        //    if (str[p] == "for")
-        //    {
-        //        p++;
-        //        if (str[p] == "(")
-        //        {
-        //            p++;
-        //            while (str[p] != ")")
-        //            {
-        //                if (isExpression(str, ref p, true))
-        //                {
-        //                    if (str[p] == ";")
-        //                    {
-        //                        p++;
-        //                        continue;
-        //                    }
-        //                    else if (str[p] == ")")
-        //                    {
-        //                        p++;
-        //                        return CheckOperator(str, ref p);
-        //                    }
-        //                    else
-        //                    {
-        //                        return false;
-        //                    }
-        //                }
-        //            }
-        //            if (str[p] != ")")
-        //            {
-        //                p++;
-        //                return CheckOperator(str, ref p);
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
-        //private bool isFor(string[] str, ref int p)
-        //{
-        //    if (str[p] == "for")
-        //    {
-
-        //        p++;
-        //        if (isAssignment(str, ref p))
-        //        {
-        //            //MessageBox.Show(str[p]);
-        //            //p++;
-        //            if (str[p] == "to")
-        //            {
-
-        //                p++;
-        //                if (isExpression(str, ref p, true))
-        //                {
-
-        //                    //p++;
-        //                    if (str[p] == "step")
-        //                    {
-
-        //                        p++;
-
-        //                        if (isAssignment(str, ref p))
-        //                        {
-
-        //                            p++;
-        //                            if (CheckOperator(str, ref p))
-        //                            {
-        //                                p++;
-
-        //                                if (str[p] == "next")
-        //                                {
-        //                                    return true;
-        //                                }
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            if (CheckOperator(str, ref p))
-        //                            {
-        //                                p++;
-        //                                if (str[p] == "next")
-        //                                {
-        //                                    return true;
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        MessageBox.Show("Отсутствует step");
-        //                    }
-
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
+       
         private bool isFor(string[] str, ref int p)
         {
             if (str[p] == "for")
@@ -986,6 +846,7 @@ namespace Analizator
                 while (
                     str[p] != "]" &&
                     str[p] != ";" &&
+                    str[p] != ":" &&
                     str[p] != "end" &&
                     str[p] != "then" &&
                     str[p] != "do" &&

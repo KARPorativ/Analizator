@@ -201,19 +201,25 @@ namespace Analizator
                     {
                         leks += simbol;
                     }
-                    else if (simbol == ':')
+                    else if (simbol == '|')
                     {
-                        WT = true;
-                    }
-                    else if (simbol == '=')
-                    {
-                            //MessageBox.Show(Convert.ToString(simbol), Convert.ToString( WT));
                         if (WT)
                         {
+                            programStrArr.Add("||");
                             WT = false;
-                            programStrArr.Add(":=");
+                            continue;
                         }
+                        WT = true;
                     }
+                    //else if (simbol == '=')
+                    //{
+                    //        //MessageBox.Show(Convert.ToString(simbol), Convert.ToString( WT));
+                    //    if (WT)
+                    //    {
+                    //        WT = false;
+                    //        programStrArr.Add(":=");
+                    //    }
+                    //}
                     else
                     {
                         
@@ -707,6 +713,7 @@ namespace Analizator
             //string[] programStrArr = karp.Split(' ');
             SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants, karp);
             syntactic.CheckProgram(karp, programStrArr);
+            programStrArr.Clear();
         }
 
         
