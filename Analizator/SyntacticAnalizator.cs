@@ -86,6 +86,7 @@ namespace Analizator
                 {
                     p++;
                 }
+                
 
             }
         }
@@ -97,7 +98,7 @@ namespace Analizator
             List<string> tempInd = new List<string>();
             for (int i = 0; i < descriptionStructure.Length; i++)
             {
-                MessageBox.Show(str[p]);
+                
                 //MessageBox.Show(str[p]+"2","2");
                 //    MessageBox.Show(descriptionStructure[i]+"y", "3");
                 if (descriptionStructure[i] == str[p])
@@ -199,33 +200,20 @@ namespace Analizator
                         
                         p++;
                         pn++;
-                        //MessageBox.Show($"Найдено начало комментария");
                         while (str[p] != "%")
                         {  
                             p++;
                             pn++;
                             
                         }
-                        //_form.CatchError($"Найдено начало комментария");
                     }
                     if (str[p] == "%")
                     {
-                        //MessageBox.Show("Найден конец комментария");
                         
                     }
                     p++;
                     pn++;
-                }
-                
-                //foreach (string y in ident)
-                //{
-                //    rt += " | " + y;
-                //}
-                //MessageBox.Show(rt);
-                //if (ident.Contains(str[p]))
-                //{
-                //    identType.Add(str[p], false);
-                //}
+                }               
                 
                 if (str[p] == "end")
                 {
@@ -233,15 +221,6 @@ namespace Analizator
                     MessageBox.Show("Синтактический анализ завершён успешно");
                     SemanticAnalizator semantic = new SemanticAnalizator(identType,_initializedVariables,operationsAssignments,expression);
                     semantic.StartSemanticAnalyzer();
-
-                    //foreach (var s in operationsAssignments)
-                    //{
-                    //    MessageBox.Show(s.ToString());
-                    //}
-                    //foreach (var s in identType)
-                    //{
-                    //    MessageBox.Show(s.ToString());
-                    //}
                     break;
                 }
 
@@ -252,13 +231,11 @@ namespace Analizator
                 else
                 {
                     MessageBox.Show($"Неверный синтаксис оператора {str[pn]}, {pn}");
-                    //_form.CatchError($"Неверный синтаксис оператора {str[pn]}, {pn}");
                     pn++;
                     p = pn;
                     if (p == str.Length)
                     {
                         MessageBox.Show("Не найден end - выход за пределы массива, анализ завершится.");
-                        //_form.CatchError("Не найден end - выход за пределы массива, анализ завершится.");
                         break;
                     }
                 }
@@ -459,16 +436,12 @@ namespace Analizator
                 p++;
                 if (isAssignment(str, ref p))
                 {
-                    //MessageBox.Show(str[p]);
-                    //p++;
                     if (str[p] == "to")
                     {
                         
                         p++;
                         if (isExpression(str, ref p, true))
                         {
-                            
-                            //p++;
                             if (str[p] == "step")
                             {
                                 
@@ -512,9 +485,7 @@ namespace Analizator
             return false;
         }
 
-
         /// Проверка оператора присваивания
-
         public bool isAssignment(string[] str, ref int p)
         {
             if (ident.Contains(str[p]))
@@ -628,6 +599,14 @@ namespace Analizator
                         {
                             indexPlusOrMin = true;
                         }
+                    }
+                    if (str[i] == '+' || str[i] == '-')
+                    {
+                        if ( !Char.IsDigit(str[i + 1]))
+                        {
+                            return false;
+                        }
+                        
                     }
                 }
                 return true;
@@ -777,9 +756,7 @@ namespace Analizator
             }
 
         }
-
         /// Проверка на парность скобок.
-
         static bool BracketCheck(string s)
         {
             string t = "[{(]})";
@@ -803,7 +780,6 @@ namespace Analizator
 
             return true;
         }
-
         
         static bool CommentCheck(string s)
         {
@@ -822,7 +798,6 @@ namespace Analizator
             return false;
         }
     }
-
     public static class ReferenceStrings
     {
         public static string Program = "begin {description} {body} end";

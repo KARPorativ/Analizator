@@ -18,9 +18,9 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-        <TextBlock Name="LargeTextBox" >begin end</TextBlock>
-            <TextBox x:Name="enter" Grid.Column="1" AcceptsReturn="True"></TextBox>
-            <TextBlock Name="LargeTextBo" Grid.Column="2" >begin end</TextBlock>
+            <TextBlock Name="LargeTextBox" >Лексемы</TextBlock>
+            <TextBox x:Name="enter" Grid.Column="1" AcceptsReturn="True" ></TextBox>
+            <TextBlock Name="LargeTextBo" Grid.Column="2" >Вывод</TextBlock>
         </Grid>
     </Grid>
 </Window>

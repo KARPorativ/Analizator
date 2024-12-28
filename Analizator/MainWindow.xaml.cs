@@ -692,13 +692,6 @@ namespace Analizator
 
     private void Button_Click(object sender, RoutedEventArgs e)
         {
-
-            //string enteredText = "begin var startIndex , endIndex , i : int ; var isFound : float ; var Atrive : bool ; startIndex := 1090d ; endIndex := 231d ; Atrive := 10d ; isFound := 12.5E+12 ; isFound := 140d div 70d ; % true if index found % for i := 0d to i LT endIndex step i := i plus 1d writeln i next if ( i NE startIndex ) writeln i ; else readln i ; while ( endIndex LE startIndex ) writeln endIndex or 1d ; end";
-            //string v = StartLexicalAnalyzer(enteredText);
-            //LargeTextBox.Text = v;
-            //SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants,enteredText);
-            //syntactic.CheckProgram(enteredText);
-
             string v = StartLexicalAnalyzer(enter.Text);
             LargeTextBox.Text = v;
             string karp = enter.Text;
@@ -707,77 +700,12 @@ namespace Analizator
             //string[] programStrArr = karp.Split(' ');
             SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants, karp);
             syntactic.CheckProgram(karp, programStrArr);
+            programStrArr.Clear();
         }
 
         
     }
-    //string[] e;
-    //string t = "";
-    //    forech( CleanUpVirtualizedItemEventHandler tg rgvbf uyjr)
-    //    {
-    //        if(7? || f?)
-    //        {
-    //            t = t + tg;
-    //        }
-    //        else
-    //        {
-    //            e.Add(t);
-    //        }
-    //    }
-    
 }
 
 
 
-//--------------------------------------------------------------------------
-//public Dictionary<string, string> numberWithType = new Dictionary<string, string>();
-
-//private List<ServiceWord> _serviceWords;
-//private List<Separators> _separators;
-//private List<Identificator> _identificators;
-//private List<Konstanta> _konstants;
-//private List<string> _arrResult;
-
-
-
-//public MainWindow(List<ServiceWord> serviceWords, List<Separators> separators)
-//{
-//    InitializeComponent();
-//    _serviceWords = serviceWords;
-//    _separators = separators;
-//    _arrResult = new List<string>();
-//    _konstants = new List<Konstanta>();
-//    _identificators = new List<Identificator>();
-
-//}
-//public int CheckServiceWord(string str)
-//{
-//    return _serviceWords.FindIndex(x => x.word == str);
-//}
-//public static List<string> GetServiceWords()
-//{
-//    return new List<string>()
-//            {
-//                "begin",
-//                "end",
-//                "dim",
-//                "if",
-//                "then",
-//                "else",
-//                "for",
-//                "let",
-//                "while",
-//                "loop",
-//                "input",
-//                "output",
-//                "true",
-//                "false",
-//                "do",
-//                "end_else",
-//                "do_while",
-//                "%",
-//                "!",
-//                "$"
-//            };
-//}
-//Даны фрагменты кода. На основании их напиши класс ServiceWord
