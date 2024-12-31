@@ -26,24 +26,25 @@ namespace Analizator
         
 
         private List<string> operations = new List<string> { "NE", "EQ", "LT", "LE", "GT", "GE", "plus", "min", "or", "mult", "div", "and", "~" };
-        public SyntacticAnalizator(List<Identificator> identificators, List<Konstanta> numbers,string enterText)
+        public SyntacticAnalizator(List<Identificator> identificators, List<Konstanta> numbers,List<string> enterText)
         {
             //_form = form;
             _identificators = identificators;
             _numbers = numbers;
             ident = _identificators.Select(tuple => tuple.valueIdentificator).ToList();
             numb = _numbers.Select(tuple => tuple.valueKonstanta).ToList();
-            _enterText = enterText;
+            //_enterText = enterText;
             //foreach (var ident in identificators)
             //{
             //    identType.Add(ident.valueIdentificator, false);
             //}
         }
 
-        public void CheckProgram(string programStr, List<string> ps)
+        public void CheckProgram(string programStr, List<string> ps, List<string> v)
         {
             string[] _ps = ps.ToArray();
-            
+            string[] _v = v.ToArray();
+
             if (!BracketCheck(programStr))// проверяем парность скобок
             {
                 MessageBox.Show("Нарушена парность скобок");
@@ -65,9 +66,9 @@ namespace Analizator
                 if (programStructure[i] == "{description}")
                 {
                     
-                    p = Description(_ps, p);
+                    p = Description(_ps,_v, p);
                     if (p == -1)
-                    {
+                    {                      
                         MessageBox.Show("Неверное описание переменных в программе.");
                         MessageBox.Show("Синтаксический тест завершиться с ошибкой.");
                         //_form.CatchError($"Неверное описание переменных в программе.");
@@ -79,10 +80,10 @@ namespace Analizator
 
                 if (programStructure[i] == "{body}")
                 {
-                    Body(_ps, p);
+                    Body(_ps,_v, p);
                 }
 
-                if (ps[i] == "begin")
+                if (v[i] == "[0, 1]")//begin
                 {
                     p++;
                 }
@@ -92,7 +93,7 @@ namespace Analizator
         }
 
         /// Инициализация переменных.
-        public int Description(string[] str, int p)
+        public int Description(string[] str,string[] vp, int p)
         {
             string[] descriptionStructure = ReferenceStrings.Description.Split(' ');
             List<string> tempInd = new List<string>();
@@ -133,7 +134,7 @@ namespace Analizator
                     }
                     else return -1;
                     
-                    if (str[p] == "int" || str[p] == "float" || str[p] == "bool")
+                    if (vp[p] == "[0, 15]" || vp[p] == "[0, 16]" || vp[p] == "[0, 17]")//int float bool
                     {
                         
                         string CheckSameVar = "";
@@ -169,9 +170,9 @@ namespace Analizator
                     return -1;
                 }
                 p++;
-                if (str[p] == "var")
+                if (vp[p] == "[0, 3]")//var
                 {
-                    p = Description(str, p);
+                    p = Description(str,vp, p);
                 }
             }
             return p;
@@ -180,51 +181,53 @@ namespace Analizator
         /// <summary>
         /// Разбор тела
         /// </summary>
-        public void Body(string[] str, int p)
+        public void Body(string[] str,string[] vp, int p)
         {
             string[] bodyStructure = ReferenceStrings.Body.Split(' ');
             int pn = p;
-            while (str[p] != "end")
+            //while (str[p] != "end")
+            while (vp[p] != "[0,2]")
             {
                 
-                if (str[p] == "/n")
+                if (vp[p] == "[1, 19]")///n
                 {
                     
                     p++;
                     pn++;
                 }
-                while (str[p] == ";" || str[p] == "%") // если мы встретили : или скобки комментария
+                while (vp[p] == "[1, 13]" || vp[p] == "[1, 21]") //; %
                 {
-                    if (str[p] == "%")
+                    if (vp[p] == "[1, 21]")//%
                     {
                         
                         p++;
                         pn++;
-                        while (str[p] != "%")
+                        while (vp[p] != "[1, 21]")//%
                         {  
                             p++;
                             pn++;
                             
                         }
                     }
-                    if (str[p] == "%")
+                    if (vp[p] == "[1, 21]")//%
                     {
                         
                     }
                     p++;
                     pn++;
-                }               
+                }
                 
-                if (str[p] == "end")
+                //if (str[p] == "end")
+                if (vp[p] == "[0, 2]")
                 {
                     MessageBox.Show("Найден конец программы");
                     MessageBox.Show("Синтактический анализ завершён успешно");
-                    SemanticAnalizator semantic = new SemanticAnalizator(identType,_initializedVariables,operationsAssignments,expression);
+                    SemanticAnalizator semantic = new SemanticAnalizator(identType,_initializedVariables,operationsAssignments,expression, vp);
                     semantic.StartSemanticAnalyzer();
                     break;
                 }
 
-                if (CheckOperator(str, ref pn))
+                if (CheckOperator(str, vp, ref pn))
                 {
                     p = pn;
                 }
@@ -241,35 +244,35 @@ namespace Analizator
                 }
             }
         }
-        public bool CheckOperator(string[] str, ref int p)
+        public bool CheckOperator(string[] str, string[] vp, ref int p)
         {
-            return isAssignment(str, ref p) || isFor(str, ref p) || isIf(str, ref p) || isWhile(str, ref p) || isWrite(str, ref p) || isReadLn(str, ref p);
+            return isAssignment(str, vp, ref p) || isFor(str, vp, ref p) || isIf(str, vp, ref p) || isWhile(str, vp, ref p) || isWrite(str, vp, ref p) || isReadLn(str, vp, ref p);
         }
 
        
-        public bool isIf(string[] str, ref int p)
+        public bool isIf(string[] str, string[] vp, ref int p)
         {
-            if (str[p] == "if")
+            if (vp[p] == "[0, 4]")//if
             {
                 
                 p++;
-                if (str[p] == "(")
+                if (vp[p] == "[1, 17]")//(
                 {
                     p++;
-                    if (isExpression(str, ref p, true))
+                    if (isExpression(str, vp, ref p, true))
                     {
                         
-                        if (str[p] == ")")
+                        if (vp[p] == "[1, 18]")//)
                         {
                             p++;
-                            if (CheckOperator(str, ref p))
+                            if (CheckOperator(str, vp, ref p))
                             {
                                 p++;
                                 
-                                if (str[p] == "else")
+                                if (vp[p] == "[0, 5]")//else
                                 {
                                     p++;
-                                    if (CheckOperator(str, ref p))
+                                    if (CheckOperator(str, vp, ref p))
                                     {
                                         p++;
                                         return true;
@@ -298,17 +301,17 @@ namespace Analizator
 
 
        
-        private bool isReadLn(string[] str, ref int p)
+        private bool isReadLn(string[] str, string[] vp, ref int p)
         {
-            if (str[p] == "readln")
+            if (vp[p] == "[0, 11]")//readln
             {
                 p++;
-                if (isExpression(str, ref p, true))
+                if (isExpression(str, vp, ref p, true))
                 {
-                    if (str[p] == ",")
+                    if (vp[p] == "[1, 14]")//,
                     {
                         p++;
-                        if (isExpression(str, ref p, true))
+                        if (isExpression(str, vp, ref p, true))
                         {
                             return true;
                         }
@@ -332,17 +335,17 @@ namespace Analizator
         }
         
 
-        private bool isWrite(string[] str, ref int p)
+        private bool isWrite(string[] str, string[] vp, ref int p)
         {
-            if (str[p] == "writeln")
+            if (vp[p] == "[0, 12]")//writeln
             {
                 p++;
-                if (isExpression(str, ref p, true))
+                if (isExpression(str, vp, ref p, true))
                 { 
-                    if (str[p] == ",")
+                    if (vp[p] == "[1, 14]")//,
                     {
                         p++;
-                        if (isExpression(str, ref p, true))
+                        if (isExpression(str, vp, ref p, true))
                         {
                             return true ;
                         }
@@ -366,21 +369,21 @@ namespace Analizator
         }
 
         
-        private bool isWhile(string[] str, ref int p)
+        private bool isWhile(string[] str, string[] vp, ref int p)
         {
-            if (str[p] == "while")
+            if (vp[p] == "[0, 10]")//while
             {
                 
                 p++;
-                if (str[p] == "(")
+                if (vp[p] == "[1, 17]")//(
                 {
                     p++;
-                    if (isExpression(str, ref p, true))
+                    if (isExpression(str, vp, ref p, true))
                     {
-                        if (str[p] == ")")
+                        if (vp[p] == "[1, 18]")//)
                         {
                             p++;
-                            if (CheckOperator(str, ref p))
+                            if (CheckOperator(str, vp, ref p))
                             {
                                 return true ;
                             }
@@ -428,34 +431,34 @@ namespace Analizator
         //    }
         //    return false;
         //}
-        private bool isFor(string[] str, ref int p)
+        private bool isFor(string[] str, string[] vp, ref int p)
         {
-            if (str[p] == "for")
+            if (vp[p] == "[0, 6]")//for
             {
                 
                 p++;
-                if (isAssignment(str, ref p))
+                if (isAssignment(str, vp, ref p))
                 {
-                    if (str[p] == "to")
+                    if (vp[p] == "[0, 7]")//to
                     {
                         
                         p++;
-                        if (isExpression(str, ref p, true))
+                        if (isExpression(str, vp, ref p, true))
                         {
-                            if (str[p] == "step")
+                            if (vp[p] == "[0, 8]")//step
                             {
                                 
                                 p++;
                                 
-                                if (isAssignment(str, ref p))
+                                if (isAssignment(str, vp, ref p))
                                 {
                                     
                                     p++;
-                                    if (CheckOperator(str, ref p))
+                                    if (CheckOperator(str, vp, ref p))
                                     {
                                         p++;
                                         
-                                        if (str[p] == "next")
+                                        if (vp[p] == "[0, 9]")//next
                                         {
                                             return true;
                                         }
@@ -463,10 +466,10 @@ namespace Analizator
                                 }
                                 else
                                 {
-                                    if (CheckOperator(str, ref p))
+                                    if (CheckOperator(str, vp, ref p))
                                     {
                                         p++;
-                                        if (str[p] == "next")
+                                        if (vp[p] == "[0, 9]")//next
                                         {
                                             return true;
                                         }
@@ -486,19 +489,19 @@ namespace Analizator
         }
 
         /// Проверка оператора присваивания
-        public bool isAssignment(string[] str, ref int p)
+        public bool isAssignment(string[] str, string[] vp, ref int p)
         {
             if (ident.Contains(str[p]))
             {
                 
                 int startIndex = p;
                 p++;
-                if (str[p] == ":=")
+                if (vp[p] == "[1, 16]")//:=
                 {
                     
                     p++;
                     
-                    if (isExpression(str, ref p))
+                    if (isExpression(str, vp, ref p))
                     {
                         operationsAssignments.Add(string.Join(" ", str, startIndex, p - startIndex));
                         identType[str[startIndex]] = true;
@@ -516,33 +519,7 @@ namespace Analizator
                     return false;
                 }
             }
-            else if (str[p] == "let")
-            {
-                p++;
-                if (ident.Contains(str[p]))
-                {
-                    int startIndex = p;
-                    p++;
-                    if (str[p] == ":=")
-                    {
-                        p++;
-                        if (isExpression(str, ref p))
-                        {
-                            operationsAssignments.Add(string.Join(" ", str, startIndex, p - startIndex));
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Не найдена операция присваивания");           
-                        return false;
-                    }
-                }
-            }
+            
             return false;
         }
         public bool CheckExponentialFormNumber(string str)
@@ -617,7 +594,7 @@ namespace Analizator
             }
         }
         //Проверка числа
-        public bool isDigit(string[] str, ref int p)
+        public bool isDigit(string[] str, string[] vp, ref int p)
         {
             if (CheckExponentialFormNumber(str[p]))
             {
@@ -695,26 +672,24 @@ namespace Analizator
         //    }
 
         //}
-        public bool isExpression(string[] str, ref int p, bool addExpression = false)
+        public bool isExpression(string[] str, string[] vp, ref int p, bool addExpression = false)
         {
-            if (ident.Contains(str[p]) || isDigit(str, ref p) || str[p] == "true" || str[p] == "false")
+            if (ident.Contains(str[p]) || isDigit(str, vp, ref p) || vp[p] == "[0, 13]" || vp[p] == "[0, 14]")
             {
                 int temp = 0;
                 int startIndex = p;
                 p++;
                 bool operation = false;
                 while (
-                    str[p] != ")" &&
-                    str[p] != ";" &&
-                    str[p] != "step" &&
-                    str[p] != "then" &&
-                    str[p] != "to" &&
-                    str[p] != "else" &&
-                    str[p] != "next" &&
-                    str[p] != ":=" &&
-                    str[p] != "loop")
+                    vp[p] != "[1, 18]" && //)
+                    vp[p] != "[1, 13]" && //;
+                    vp[p] != "[0, 8]" && //step
+                    vp[p] != "[0, 7]" && //to
+                    vp[p] != "[0, 5]" && //else
+                    vp[p] != "[0, 9]" && //next
+                    vp[p] != "[1, 16]") //:=
                 {
-                    if ((ident.Contains(str[p]) || isDigit(str, ref p)) && operation)
+                    if ((ident.Contains(str[p]) || isDigit(str, vp, ref p)) && operation)
                     {
                         operation = false;
                         p++;
@@ -724,14 +699,14 @@ namespace Analizator
                         operation = true;
                         p++;
                     }
-                    else if ((ident.Contains(str[p]) || isDigit(str, ref p)) && !operation)
+                    else if ((ident.Contains(str[p]) || isDigit(str, vp, ref p)) && !operation)
                     {
                         break;
                     }
-                    else if (str[p] == "writeln" ||
-                    str[p] == "if" ||
-                    str[p] == "for" ||
-                    str[p] == "readln")
+                    else if (str[p] == "[0, 12]" || //writeln
+                    str[p] == "[0, 4]" || //if
+                    str[p] == "[0, 6]" || //for
+                    str[p] == "[0, 11]") //readln
                     {
                         p--;
                         temp = 1;

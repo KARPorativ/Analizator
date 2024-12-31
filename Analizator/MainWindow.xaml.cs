@@ -156,7 +156,7 @@ namespace Analizator
 
 
 
-        public string StartLexicalAnalyzer(string programStr)
+        public List<string> StartLexicalAnalyzer(string programStr)
         {
             string result = "";
             bool hasEnd = false;
@@ -303,10 +303,10 @@ namespace Analizator
                 
             }
 
-            //_form.SetTableIdentificators(_identificators);
-            //_form.SetTableKonstants(_konstants);
 
-            return result;
+
+            //return result;
+            return _arrResult;
         }
 
         /// <summary>
@@ -688,22 +688,17 @@ namespace Analizator
             }
         }
 
-    
-
     private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string v = StartLexicalAnalyzer(enter.Text);
-            LargeTextBox.Text = v;
+            List<string> v = StartLexicalAnalyzer(enter.Text);
+            //LargeTextBox.Text = v;
             string karp = enter.Text;
             while (karp.Contains("\n")) { karp = karp.Replace("\n", " "); }
             while (karp.Contains("\r")) { karp = karp.Replace("\r", ""); }
-            //string[] programStrArr = karp.Split(' ');
-            SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants, karp);
-            syntactic.CheckProgram(karp, programStrArr);
+            SyntacticAnalizator syntactic = new SyntacticAnalizator(_identificators, _konstants, v);
+            syntactic.CheckProgram(karp, programStrArr,v);
             programStrArr.Clear();
-        }
-
-        
+        } 
     }
 }
 
