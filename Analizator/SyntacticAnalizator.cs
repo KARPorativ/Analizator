@@ -93,7 +93,7 @@ namespace Analizator
         }
 
         /// Инициализация переменных.
-        public int Description(string[] str,string[] vp, int p)
+        public int Description(string[] str, string[] vp, int p)
         {
             string[] descriptionStructure = ReferenceStrings.Description.Split(' ');
             List<string> tempInd = new List<string>();
